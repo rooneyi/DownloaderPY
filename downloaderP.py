@@ -1,20 +1,27 @@
 from pytube import YouTube
+import tkinter
 
-url = "https://www.youtube.com/watch?v=VSyORTdmVoU"
 
-yt = YouTube(url)
+def downloader():
+    url = url_entry.get()
+    yt = YouTube(url)
+    video = yt.streams.get_highest_resolution()
+    # Juste pour montrer que le programme est en train de travailler
+    print(video.filesize)
+    print(video.title)
 
-print("TITRE : " + yt.title)
-print("DESCRIPTION : " + str(yt.description))
-print("DUREE : " + str(yt.length) + " secondes")
-print("AUTEUR : " + yt.author)
-print("VUES : " + str(yt.views))
-print("NOTE : " + str(yt.rating))
-print("TAGS : " + str(yt.keywords))
-print("DATE DE PUBLICATION : " + yt.publish_date.strftime("%d/%m/%Y"))
-print("URL : " + url)
-print("FORMATS DISPONIBLES : " + str(yt.streams.filter(progressive=True)))
+    video.download()
 
-downloaded_stream = yt.streams.get_highest_resolution()
-print("Téléchargement de la vidéo en cours...") # Juste pour montrer que le programme est en train de travailler
-downloaded_stream.download()
+
+fenetre = tkinter.Tk()
+fenetre.geometry("600x600")
+fenetre.title("Downloader")
+url_label = tkinter.Label(fenetre, text="url de la video :")
+url_label.pack()
+
+url_entry = tkinter.Entry(fenetre)
+url_entry.pack()
+telecharger_buttob = tkinter.Button(fenetre, text="Telecharger", command=downloader)
+
+telecharger_buttob.pack()
+fenetre.mainloop()
